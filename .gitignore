@@ -1,0 +1,17 @@
+.DS_Store
+**/.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+venv-metal/
+*.pyc
+
+# losse data en output, niet nodig op GitHub
+csv/
+output/
+*.png
+nl_shots_hist.csv
+
+# andere notebooks die niet bij dit project horen
+Notebooks/hydration_break_studie.ipynb
+Notebooks/wk2026_shotmaps.ipynb
+Notebooks/NL_Zweden_WK2026_analyzer.ipynb
