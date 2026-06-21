@@ -71,29 +71,37 @@ Een verkennende analyse van het scoringspatroon van Oranje over verschillende WK
 
 ## De wiskunde
 
-**Verwachte Elo-score**
+De volledige afleiding staat in sectie 12 van het predictor-notebook; hieronder de kern.
 
-$$E_A = \frac{1}{1 + 10^{\,(R_B - R_A)/400}}$$
+**Verwachte Elo-score** van team $A$ tegen $B$, gegeven ratings $R_A$ en $R_B$:
 
-**Elo-update** (K = toernooigewicht, G = doelsaldo-multiplier)
+$$E_A = \frac{1}{1 + 10^{(R_B - R_A)/400}}$$
+
+**Elo-update** na de wedstrijd, met werkelijke uitkomst $S_A \in \lbrace 1, \tfrac{1}{2}, 0 \rbrace$:
 
 $$R_A' = R_A + K \cdot G \cdot (S_A - E_A)$$
 
-**Verwachte goals** (d = Elo-verschil)
+waarbij $K$ het toernooigewicht is (een WK-duel weegt zwaarder dan een vriendschappelijke) en $G$ een doelsaldo-multiplier die grotere overwinningen sterker laat meetellen. Met $\Delta$ = doelsaldo:
 
-$$\lambda = \mu \cdot e^{\,\beta d / 200}$$
+$$G = 1 \ \ (|\Delta| \le 1), \qquad G = \tfrac{3}{2} \ \ (|\Delta| = 2), \qquad G = \frac{11 + |\Delta|}{8} \ \ (|\Delta| \ge 3)$$
 
-**Scoreline (Poisson)**
+Thuisspelende teams krijgen vooraf $+H$ Elo-punten ($H = 65$), behalve op neutrale grond.
+
+**Van Elo naar verwachte goals**, log-lineair gekoppeld aan het Elo-verschil $d = R_A - R_B$ rond het toernooigemiddelde $\mu$:
+
+$$\lambda_A = \mu \cdot e^{\beta d / 200}, \qquad \lambda_B = \mu \cdot e^{-\beta d / 200}$$
+
+**Scoreline (Poisson)** — kans op precies $k$ goals; een specifieke uitslag $(i,j)$ is het product $P(X_A = i)\,P(X_B = j)$:
 
 $$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$$
 
-**Ranked Probability Score** (evaluatie, lager = beter)
+**Ranked Probability Score** (evaluatie, lager = beter):
 
 $$\text{RPS} = \frac{1}{R-1} \sum_{i=1}^{R-1} \left( \sum_{r=1}^{i} p_r - \sum_{r=1}^{i} o_r \right)^2$$
 
-**Titelkans (Monte Carlo)**
+**Titelkans (Monte Carlo)** over $N$ gesimuleerde toernooien:
 
-$$P(\text{kampioen} = T) \approx \frac{1}{N} \sum_{n=1}^{N} \mathbb{1}\{\text{winnaar}_n = T\}$$
+$$P(\text{kampioen} = T) \approx \frac{1}{N} \sum_{n=1}^{N} \mathbb{1}\lbrace \text{winnaar}_n = T \rbrace$$
 
 ## Gebruik
 
